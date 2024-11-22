@@ -11,7 +11,22 @@ namespace StudentLoginReg.Controllers
     public class AccountController : Controller
     {
         // GET: /<controller>/
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Register()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ChangePassword()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> VerifyEmail()
         {
             return View();
         }
