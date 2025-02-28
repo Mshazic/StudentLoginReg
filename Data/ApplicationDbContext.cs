@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StudentLoginReg.Models.Entities;
 using StudentLoginReg.Models.StudentInfo;
 
 namespace StudentLoginReg.Data
@@ -13,6 +14,9 @@ namespace StudentLoginReg.Data
 		}
 
 		public DbSet<Student> StudentsAccounts  { get; set; }
+
+		public DbSet<StudentManagement> StudentsManagement { get; set; }
+
 	}
 }
 
