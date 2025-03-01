@@ -36,6 +36,7 @@ namespace StudentLoginReg.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddStdManagementViewModel viewModel)
         {
+
             var studentManagement = new StudentManagement
             {
                 Name= viewModel.Name,
@@ -47,6 +48,7 @@ namespace StudentLoginReg.Controllers
 
             await dbContext.StudentsManagement.AddAsync(studentManagement);
             await dbContext.SaveChangesAsync();
+            TempData["success"] = "Student created successfully";
 
             return RedirectToAction("List", "StudentManagement");
         }
@@ -83,9 +85,13 @@ namespace StudentLoginReg.Controllers
                 studentManagement.Subscribed = viewModel.Subscribed;
 
                 await dbContext.SaveChangesAsync();
+                TempData["success"] = "Student updated successfully";
+            }
+            else
+            {
+                TempData["error"] = "Student can not be deleted";
 
             }
-
             return RedirectToAction("List","StudentManagement");
         }
 
@@ -100,8 +106,14 @@ namespace StudentLoginReg.Controllers
             {
                 dbContext.StudentsManagement.Remove(viewModel);
                 await dbContext.SaveChangesAsync();
+                TempData["success"] = "Student deleted successfully";
             }
-                        return RedirectToAction("List","StudentManagement");
+            else
+            {
+                TempData["error"] = "Student can not be deleted";
+
+            }
+            return RedirectToAction("List","StudentManagement");
         }
     }
 }
