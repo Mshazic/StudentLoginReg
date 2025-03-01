@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentLoginReg.Data;
@@ -47,7 +48,45 @@ namespace StudentLoginReg.Controllers
             await dbContext.StudentsManagement.AddAsync(studentManagement);
             await dbContext.SaveChangesAsync();
 
-            return View();
+            return RedirectToAction("List", "StudentManagement");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            var studentManagemet = await dbContext.StudentsManagement.ToListAsync();
+
+            return View(studentManagemet);
+        }
+
+        //this is not done
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+           var studentManagement = await dbContext.StudentsManagement.FindAsync(id);
+
+            return View(studentManagement);
+
+        }
+
+        [HttpPost]
+        public  async Task<IActionResult> Edit(StudentManagement viewModel)
+        {
+            var studentManagement = await dbContext.StudentsManagement.FindAsync(viewModel.Id);
+            if (studentManagement is not null)
+            {
+                studentManagement.Name = viewModel.Name;
+                studentManagement.Surname = viewModel.Surname;
+                studentManagement.Email = viewModel.Email;
+                studentManagement.Phone = viewModel.Phone;
+                studentManagement.Subscribed = viewModel.Subscribed;
+
+                await dbContext.SaveChangesAsync();
+
+            }
+
+            return RedirectToAction("List","StudentManagement");
         }
     }
 }
