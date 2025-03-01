@@ -88,6 +88,21 @@ namespace StudentLoginReg.Controllers
 
             return RedirectToAction("List","StudentManagement");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(StudentManagement viewModel)
+        {
+            var studentManagement = await dbContext.StudentsManagement
+                .AsNoTracking().FirstOrDefaultAsync(x => x.Id == viewModel.Id);
+
+
+            if (studentManagement is not null)
+            {
+                dbContext.StudentsManagement.Remove(viewModel);
+                await dbContext.SaveChangesAsync();
+            }
+                        return RedirectToAction("List","StudentManagement");
+        }
     }
 }
 
