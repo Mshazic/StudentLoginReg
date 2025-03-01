@@ -1,0 +1,34 @@
+﻿
+@model List<StudentLoginReg.Models.Entities.StudentManagement>
+<h1>Students</h1>
+<table class="table">
+    <thead>
+       <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Subscribed</th>
+         <th>BTN</th>
+      </tr>
+    </thead>
+    <tbody>
+        @foreach (var studentManagement in Model)
+            {
+                <tr>
+                    <td>@studentManagement.Id</td>
+                    <td>@studentManagement.Name</td>
+                    <td>@studentManagement.Surname</td>
+                    <td>@studentManagement.Email</td>
+                    <td>@studentManagement.Phone</td>
+                    <td>@studentManagement.Subscribed</td>
+
+                    <td>
+                        <a class="btn btn-primary" asp-route-id="@studentManagement.Id" asp-controller="StudentManagement" asp-action="Edit">Edit</a>
+
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>

@@ -1,22 +1,31 @@
-﻿@model StudentLoginReg.ViewModel.StudentManagement.AddStdManagementViewModel
+﻿@model StudentLoginReg.Models.Entities.StudentManagement
+<h1>Edit Student</h1>
+@if (Model is null)
+    {
+        <p>Student Not found</p>
+    } else
+    { 
 
-<h1>Add Student</h1>
 <form method="post">
     <div class="mt3">
+        <label class="form-label">Id</label>
+        <input type="text" class="form-control" asp-for="Id" readonly />
+    </div>
+    <div class="mt3">
         <label class="form-label">Name</label>
-        <input type="text" class="form-control" asp-for="Name" required  />
+        <input type="text" class="form-control" asp-for="Name" />
     </div>
     <div class="mt3">
         <label class="form-label">Surname</label>
-        <input type="text" class="form-control" asp-for="Surname" required />
+        <input type="text" class="form-control" asp-for="Surname" />
     </div>
     <div class="mt3">
         <label class="form-label">Email</label>
-        <input type="email" class="form-control" asp-for="Email" required/>
+        <input type="email" class="form-control" asp-for="Email" />
     </div>
     <div class="mt3">
         <label class="form-label">Phone</label>
-        <input type="text" class="form-control" asp-for="Phone"required />
+        <input type="text" class="form-control" asp-for="Phone" />
     </div>
 
 
@@ -29,3 +38,4 @@
         <button type="submit" class="btn-btn-primary">Save</button>
     </div>
 </form>
+    }
