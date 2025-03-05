@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,17 +34,31 @@ namespace StudentLoginReg.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Add(AddStdManagementViewModel viewModel)
-        {
 
+
+        [HttpPost]
+        public async Task<IActionResult> Add(StudentManagement account, string returnUrl)
+        {
+            var isEmailIdExists = dbContext.StudentsManagement.Any(x => x.Email == account.Email);
+            var isPhoneExist = dbContext.StudentsManagement.Any(x => x.Phone == account.Phone);
+
+            if (isEmailIdExists)
+            {
+                TempData["error"] = "This Email is already used";
+                return View();
+            }
+            if (isPhoneExist)
+            {
+                TempData["error"] = "This Phone number is already used";
+                return View();
+            }
             var studentManagement = new StudentManagement
             {
-                Name= viewModel.Name,
-                Surname= viewModel.Surname,
-                Email= viewModel.Email,
-                Phone= viewModel.Phone,
-                Subscribed= viewModel.Subscribed
+                Name = account.Name,
+                Surname = account.Surname,
+                Email = account.Email,
+                Phone = account.Phone,
+                Subscribed = account.Subscribed
             };
 
             await dbContext.StudentsManagement.AddAsync(studentManagement);
@@ -51,7 +66,9 @@ namespace StudentLoginReg.Controllers
             TempData["success"] = "Student created successfully";
 
             return RedirectToAction("List", "StudentManagement");
+            //return View();
         }
+
 
         [Authorize]
         [HttpGet]
@@ -62,7 +79,7 @@ namespace StudentLoginReg.Controllers
             return View(studentManagemet);
         }
 
-        //this is not done
+       
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
