@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddIdentity<Student, IdentityRole>(option =>
+builder.Services.AddIdentity<Student,IdentityRole>(option =>
 {
     option.Password.RequireNonAlphanumeric = false;
     option.Password.RequiredLength = 8;
@@ -25,7 +25,6 @@ builder.Services.AddIdentity<Student, IdentityRole>(option =>
 
 }).AddRoles<IdentityRole>()
  .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,7 +46,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-using(var scope = app.Services.CreateAsyncScope())
+using (var scope = app.Services.CreateAsyncScope())
 {
     var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
     var roles = new[] { "Admin", "Manager", "Member" };
@@ -60,6 +59,22 @@ using(var scope = app.Services.CreateAsyncScope())
 
         }
     }
+}
+using (var scope = app.Services.CreateAsyncScope())
+{
+    var userManager =
+        scope.ServiceProvider.GetService<UserManager<Student>>();
+    string email = "admin@admin.com";
+    string password = "Test@123";
+    if (await userManager.FindByEmailAsync(email) == null)
+    {
+        var user = new Student();
+        user.UserName = email;
+        user.Email = email;
+        await userManager.CreateAsync(user, password);
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+    
 }
 
 app.Run();
