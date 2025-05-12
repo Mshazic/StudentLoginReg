@@ -70,7 +70,7 @@ namespace StudentLoginReg.Controllers
         }
 
 
-        [Authorize]
+       
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -88,7 +88,7 @@ namespace StudentLoginReg.Controllers
             return View(studentManagement);
 
         }
-
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public  async Task<IActionResult> Edit(StudentManagement viewModel)
         {
@@ -107,6 +107,8 @@ namespace StudentLoginReg.Controllers
             else
             {
                 TempData["error"] = "Student can not be deleted";
+                //return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Account");
 
             }
             return RedirectToAction("List","StudentManagement");

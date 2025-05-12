@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<StudentLoginReg.Models.StudentInfo.Student> SignInManager
+@inject UserManager<StudentLoginReg.Models.StudentInfo.Student> UserManager
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -40,8 +43,14 @@
 
 <body class="index-page">
 
-
-
+@if (User.IsInRole("Admin"))
+    {
+        <h1>Hi Admin</h1>
+    }
+else
+{
+        <h1>Hi member</h1>
+}
 
         <!-- Hero Section -->
         <section id="hero" class="hero section">
